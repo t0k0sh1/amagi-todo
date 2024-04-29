@@ -6,7 +6,7 @@ from datetime import datetime
 
 class TaskBase(BaseModel):
     title: str = Field(..., example="Buy groceries")
-    due_date: Optional[datetime] = Field(..., example="2021-08-01T12:00:00")
+    due_date: Optional[datetime] = Field(None, example="2021-08-01T12:00:00")
 
 
 class TaskCreate(TaskBase):
