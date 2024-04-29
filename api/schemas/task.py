@@ -1,8 +1,12 @@
-from pydantic import BaseModel, Field
+from typing import Optional
+
+from pydantic import BaseModel, Field, field_validator
+from datetime import datetime
 
 
 class TaskBase(BaseModel):
     title: str = Field(..., example="Buy groceries")
+    due_date: Optional[datetime] = Field(..., example="2021-08-01T12:00:00")
 
 
 class TaskCreate(TaskBase):

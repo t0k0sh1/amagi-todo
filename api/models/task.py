@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+import datetime
+from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.orm import relationship
 
 from api.db import Base
@@ -9,13 +10,8 @@ class Task(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(1024))
+    due_date = Column(DateTime)
+    created_at = Column(DateTime, default=datetime.datetime.now(datetime.UTC))
+    updated_at = Column(DateTime, default=datetime.datetime.now(datetime.UTC), onupdate=datetime.datetime.now(datetime.UTC))
 
-    done = relationship("Done", back_populates="task", cascade="delete")
-
-
-class Done(Base):
-    __tablename__ = "dones"
-
-    id = Column(Integer, ForeignKey("tasks.id"), primary_key=True)
-
-    task = relationship("Task", back_populates="done")
+    completed_task = relationship("CompletedTask", back_populates="task", cascade="delete")
