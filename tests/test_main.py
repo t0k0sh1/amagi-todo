@@ -44,5 +44,24 @@ async def test_create_and_read(async_client):
     response_obj = response.json()
     assert len(response_obj) == 1
     assert response_obj[0]["title"] == "test task"
-    assert response_obj[0]["done"] == False
+    assert response_obj[0]["done"] is False
 
+
+@pytest.mark.asyncio
+async def test_done(async_client):
+    response = await async_client.post("/tasks", json={"title": "test task"})
+    assert response.status_code == starlette.status.HTTP_200_OK
+    response_obj = response.json()
+    assert response_obj["title"] == "test task"
+
+    response = await async_client.put("/tasks/1/done")
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    response = await async_client.put("/tasks/1/done")
+    assert response.status_code == starlette.status.HTTP_400_BAD_REQUEST
+
+    response = await async_client.delete("/tasks/1/done")
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    response = await async_client.delete("/tasks/1/done")
+    assert response.status_code == starlette.status.HTTP_400_BAD_REQUEST
